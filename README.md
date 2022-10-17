@@ -11,3 +11,8 @@ Each blogpost will discuss a specific vulnerability resulting from an insecure c
 
 - [Tidbit #1 - The Danger of Falling to System Role in AWS SDK Client](https://blog.doyensec.com/2022/10/18/cloudsectidbit-dataimport.html)
 
+<hr>
+
+This project was made with love in [Doyensec Research island](https://doyensec.com/research.html).
+
+![alt text](https://doyensec.com/images/logo.svg "Doyensec Logo")
