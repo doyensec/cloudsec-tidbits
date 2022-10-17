@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gallery - Data Import App - CloudSecTidbit #1</title>
+    <link href="assets/bootstrap.min.css" rel="stylesheet">
+
+    <meta name="theme-color" content="#7952b3">
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .logo_image {
+            width: 40px;
+            padding-right: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <main>
+        <div class="container py-4">
+
+            <div class="container">
+                <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                    <a href="/"
+                        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+
+                        <img class="logo_image" src="" />
+
+                        <span class="fs-4">Vulnerable Web Platform</span>
+                    </a>
+
+                    <ul class="nav nav-pills">
+                        <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
+                        <li class="nav-item"><a href="/gallery.html" class="nav-link">Data Gallery</a></li>
+                        <li class="nav-item"><a onclick="fetch('/reset-challenge');" class="nav-link">Reset Challenge</a></li>
+                    </ul>
+                </header>
+            </div>
+
+            <div class="p-5 mb-4 bg-light rounded-3">
+                <div class="container-fluid py-5">
+                    <h1 class="display-5 fw-bold">Data Import From S3</h1>
+
+                    <hr class="my-4">
+
+                    <center>
+                        <div class="col-md-7 col-lg-8">
+
+                            <br><br>
+
+                            <form class="needs-validation" id="form" method="POST">
+                                <div class="row g-3">
+
+                                    <div class="col-12">
+                                        <label for="email" class="form-label">AWS Access Key ID</label>
+                                        <input type="text" class="form-control" id="access_key" name="access_key" />
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="address" class="form-label">AWS Secret Access Key</label>
+                                        <input type="text" class="form-control" id="secret_key" name="secret_key" />
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="address2" class="form-label">AWS Bucket Name</label>
+                                        <input type="text" class="form-control" id="bucket_name" name="bucket_name" />
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="address2" class="form-label">AWS Region</label>
+                                        <select class="form-select" id="regions_select" name="regions_select">
+                                            <option value="">Choose...</option>
+                                        </select>
+                                    </div>
+
+                                    <hr class="my-4">
+
+                                    <button class="w-100 btn btn-primary btn-lg" type="button" id="submitData">Import
+                                        data to storage</button>
+                            </form>
+                        </div>
+                    </center>
+
+                </div>
+            </div>
+
+            <div class="row align-items-md-stretch">
+                <footer class="pt-3 mt-4 text-muted border-top">
+                    &copy; Doyensec 2022
+                </footer>
+            </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="assets/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $.ajax({
+            type: 'GET',
+            url: '/variable',
+            dataType: 'json',
+            success: function (data) {
+                let source_internal = `https://${data}.s3.amazonaws.com/public-stuff/logo.png?${Math.random()}`;
+                $(".logo_image").attr("src", source_internal);
+            },
+            error: function (jqXHR, status, err) {
+                alert("Error getting url logo");
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#submitData").click(function (e) {
+            console.log("submitData form");
+            var bucket_name = $("#bucket_name").val();
+            var secret_key = $("#secret_key").val();
+            var access_key = $("#access_key").val();
+            var region = $('#regions_select option:selected').val()
+
+            var data_to_send = {
+                BucketName: bucket_name,
+                SecretKey: secret_key,
+                AccessKey: access_key,
+                Region: region
+            };
+
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                data: JSON.stringify(data_to_send),
+                dataType: 'json',
+                contentType: 'application/json;charset=UTF-8',
+                url: "/importData",
+                success: function (data) {
+                    alert("Data imported correctly");
+                    console.log(data);
+                },
+                error: function (jqXHR, status, err) {
+                    console.log(jqXHR, status, err);
+                    alert(err);
+                }
+
+            });
+        });
+
+        $(window).load(function () {
+
+            $.ajax({
+                type: 'GET',
+                url: '/getListFiles',
+                dataType: 'json',
+                success: function (data) {
+                    $.each(data, function (index, element) {
+
+                        let item = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                            <code><a target="_black" href="/storage/${element.file_name}">${element.file_name}</a></code>
+                            <span class="badge bg-primary rounded-pill">${element.size}</span>
+                        </li>`;
+
+                        $("#list").append(item);
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        var select = document.getElementById("regions_select");
+        var options = [
+            "us-east-1",
+            "us-east-2",
+            "us-west-1",
+            "us-west-2",
+            "af-south-1",
+            "ap-east-1",
+            "ap-southeast-3",
+            "ap-south-1",
+            "ap-northeast-3",
+            "ap-northeast-2",
+            "ap-northeast-1",
+            "ap-southeast-2",
+            "ap-southeast-1",
+            "ca-central-1",
+            "eu-central-1",
+            "eu-west-1",
+            "eu-west-2",
+            "eu-south-1",
+            "eu-west-3",
+            "eu-north-1",
+            "me-south-1",
+            "sa-east-1"
+        ];
+
+        for (var i = 0; i < options.length; i++) {
+            var opt = options[i];
+            var el = document.createElement("option");
+            el.textContent = opt;
+            el.value = opt;
+            select.appendChild(el);
+        }
+    </script>
+
+</body>
+
+</html>

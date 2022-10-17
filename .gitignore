@@ -1,0 +1,7 @@
+.DS_Store
+**.terraform*
+**tfstate
+**.tfout
+**tfstate.backup
+**go.sum
+**go.mod

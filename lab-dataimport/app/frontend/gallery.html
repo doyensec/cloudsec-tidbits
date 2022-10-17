@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data Import App - CloudSecTidbit #1</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/bootstrap.min.css" rel="stylesheet">
+
+    <meta name="theme-color" content="#7952b3">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .logo_image{
+            width: 40px;
+            padding-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="container py-4">
+            
+            <div class="container">
+                <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                        
+                        <img class="logo_image" src="" />
+
+                      <span class="fs-4">Vulnerable Web Platform</span>
+                    </a>
+              
+                    <ul class="nav nav-pills">
+                      <li class="nav-item"><a href="/" class="nav-link" aria-current="page">Home</a></li>
+                      <li class="nav-item"><a href="/gallery.html" class="nav-link active">Data Gallery</a></li>
+                      <li class="nav-item"><a onclick="fetch('/reset-challenge');" class="nav-link">Reset Challenge</a></li>
+                    </ul>
+                  </header>
+              </div>
+
+            <div class="p-5 mb-4 bg-light rounded-3">
+                <div class="container-fluid py-5">
+                    <h2 class="display-7 fw-bold">Data Strorage Gallery</h2>
+
+                    <br><br>
+                    <ul class="list-group" id="list">
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row align-items-md-stretch">
+                <footer class="pt-3 mt-4 text-muted border-top">
+                    &copy; Doyensec 2022
+                </footer>
+            </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+    <script>
+        $.ajax({
+            type: 'GET',
+            url: '/variable',
+            dataType: 'json',
+            success: function (data) {
+                let source_internal = `https://${data}.s3.amazonaws.com/public-stuff/logo.png?${Math.random()}`;
+                $(".logo_image").attr("src", source_internal);
+            },
+            error: function (jqXHR, status, err) {
+                alert("Error getting the S3 bucket name");
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(window).load(function () {
+
+            $.ajax({
+                type: 'GET',
+                url: '/getListFiles',
+                dataType: 'json',
+                success: function (data) {
+                    $.each(data, function (index, element) {
+
+                        let item = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                            <code><a target="_black" href="/storage/${element.file_name}">${element.file_name}</a></code>
+                            <span class="badge bg-primary rounded-pill">${element.size}</span>
+                        </li>`;
+
+                        $("#list").append(item);
+                    });
+                },
+                error: function (jqXHR, status, err) {
+                    alert("Error listing files");
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
