@@ -2,10 +2,10 @@
 
 ![cloudsectidbit-logo200](https://user-images.githubusercontent.com/77505868/196213004-2a04f023-297a-4e4b-88de-73aea747e970.png)
 
-CloudSec Tidbits is a blogpost series aiming to describe some bugs found by Doyensec during security testing activities.
-Sometimes the Cloud Infrastructure is properly configured, but the web application logic fails to use the services correctly.
+CloudSec Tidbits is a blogpost series showcasing interesting bugs found by Doyensec during cloud security testing activities.
+Sometimes the cloud infrastructure is properly configured, but the web application fails to use the services correctly.
 
-Each blogpost will discuss a specific vulnerability resulting from an insecure combination of web and cloud related technologies. Every article will include an Infrastructure as Code (IaC) laboratory easily deployable to play with the described case.
+Each blogpost will discuss a specific vulnerability resulting from an insecure combination of web and cloud related technologies. Every article will include an Infrastructure as Code (IaC) laboratory that can be easily deployed to experiment with the described vulnerability.
 
 ### Available episodes:
 
