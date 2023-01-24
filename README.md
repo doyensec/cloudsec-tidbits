@@ -10,7 +10,7 @@ Each blogpost will discuss a specific vulnerability resulting from an insecure c
 ### Available episodes:
 
 - [Tidbit #1 - The Danger of Falling to System Role in AWS SDK Client](https://blog.doyensec.com/2022/10/18/cloudsectidbit-dataimport.html)
-- [Tidbit #2 - Tampering With Unrestricted User Attributes In AWS Cognito User Pools](https://blog.doyensec.com/2023/01/24/tampering-unrestricted-user-attributes-aws-cognito.html)
+- [Tidbit #2 - Tampering User Attributes In AWS Cognito User Pools](https://blog.doyensec.com/2023/01/24/tampering-unrestricted-user-attributes-aws-cognito.html)
 
 <hr>
 
