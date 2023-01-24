@@ -2,7 +2,7 @@
 
 **Brief lab description:** The deployed infrastructure will run a simple application designed to demonstrate users management via AWS Cognito. Can you read the registered users list?
 
-**Blog post:** [Tidbit #2 - Tampering With Unrestricted User Attributes In AWS Cognito User Pools](https://blog.doyensec.com/2023/01/24/tampering-unrestricted-user-attributes-aws-cognito.html)
+**Blog post:** [Tidbit #2 - Tampering User Attributes In AWS Cognito User Pools](https://blog.doyensec.com/2023/01/24/tampering-unrestricted-user-attributes-aws-cognito.html)
 
 <img width="1259" alt="cognito-app" src="https://user-images.githubusercontent.com/77505868/214042925-de819a0d-9cf8-49a0-9315-f78b70356d50.png">
 
