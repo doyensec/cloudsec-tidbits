@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vulnerable Web Platform - nslookup Command</title>
+    <link href="assets/bootstrap.min.css" rel="stylesheet">
+
+    <meta name="theme-color" content="#7952b3">
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .logo_image {
+            width: 40px;
+            padding-right: 10px;
+        }
+
+        .spinner{
+            display:none;
+        }
+    </style>
+
+</head>
+
+<body>
+    <main>
+        <div class="container py-4">
+
+            <div class="container">
+                <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                    <a href="/"
+                        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+
+                        <img class="logo_image" src="assets/logo.png" />
+
+                        <span class="fs-4">Vulnerable Web Platform</span>
+                    </a>
+
+                    <ul class="nav nav-pills">
+                        <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
+                    </ul>
+                </header>
+            </div>
+
+            <div class="p-5 mb-4 bg-light rounded-3">
+                <div class="container-fluid py-5" >
+                    <h1 class="display-6 fw-bold">nslookup (DNS Lookup) 'Em All</h1>
+                    <hr class="my-4">
+
+                    <center>
+                        <div class="col-md-7 col-lg-8">
+                            <br><br>
+
+                            <form class="needs-validation" id="form" method="POST">
+                                <div class="row g-3">
+
+                                    <div class="col-12">
+                                        <label for="email" class="form-label"></label>
+
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text" id="basic-addon3">nslookup </span>
+                                            <input type="text" class="form-control form-control-lg" id="domain_name"
+                                                aria-describedby="basic-addon3">
+                                        </div>
+                                    </div>
+
+                                    <hr class="my-4">
+                                    <button class="w-100 btn btn-primary btn-lg" type="button"
+                                        id="submitData">Submit</button>
+                            </form>
+                        </div>
+                    </center>
+
+                </div>
+            </div>
+
+            <div class="p-5 mb-4 bg-light rounded-3">
+                <div class="text-center spinner" id="loading-spinner">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div><br>
+                
+                <div class="container-fluid py-5 spinner" style="background-color: black; color: aliceblue;" id="container-result">
+
+                    <figure class="highlight">
+                        <pre><code id="ns-result"> </code> </pre>
+                    </figure>
+                </div>
+            </div>
+
+            <div class="row align-items-md-stretch">
+        
+                <footer class="pt-3 mt-4 text-muted border-top">
+                    &copy; Doyensec 2023
+                </footer>
+            </div>
+    </main>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="assets/bootstrap.bundle.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(window).load(function () {
+
+            var code = $('#ns-result');
+
+            $("#submitData").click(function (e) {
+                var domain_name = $("#domain_name").val();
+
+                var data_to_send = {
+                    DomainName: domain_name
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    cache: false,
+                    data: JSON.stringify(data_to_send),
+                    dataType: 'json',
+                    contentType: 'application/json;charset=UTF-8',
+                    url: "/ns-command",
+                    success: function (data) {
+                        console.log(data);
+                        pollResults(data.JobId);
+                        $('#loading-spinner').toggle();
+                    },
+                    error: function (jqXHR, status, err) {
+                        console.log(err)
+                        alert(jqXHR.responseText)
+                        console.log(jqXHR.responseText)
+                        code.text(jqXHR.responseText)
+                        $('#container-result').toggle()
+                        $('#loading-spinner').hide()
+                    }
+
+                });
+            });
+        });
+
+        function pollResults(identifier) {
+
+            var data_to_send = {
+                JobId: identifier
+            };
+
+            var code = $('#ns-result');
+
+            poll = function () {
+                    $.ajax({
+                        url: '/get-job-result',
+                        dataType: 'json',
+                        type: 'POST',
+                        data: JSON.stringify(data_to_send),
+                        success: function (data) {
+                            var stauts = data.Status;
+                            
+                            if (stauts == "SUCCEEDED") { 
+                                console.log("Stopping polling")
+                                code.text(data.Content)
+                                $('#container-result').toggle()
+                                $('#loading-spinner').hide()
+                                clearInterval(pollInterval); 
+                            }
+                            
+                        },
+                        error: function (jqXHR, status, err) {
+                            console.log('Error!');
+                            //alert(jqXHR.responseText)
+                            console.log(jqXHR.responseText)
+                            //code.text(jqXHR.responseText)
+                            //$('#container-result').toggle()
+                            //$('#loading-spinner').hide()
+                        }
+                    });
+                },
+                pollInterval = setInterval(function () {
+                    poll();
+                }, 2000);
+            poll();
+        }
+    </script>
+
+</body>
+
+</html>

@@ -11,9 +11,10 @@ Each blogpost will discuss a specific vulnerability resulting from an insecure c
 
 - [Tidbit #1 - The Danger of Falling to System Role in AWS SDK Client](https://blog.doyensec.com/2022/10/18/cloudsectidbit-dataimport.html)
 - [Tidbit #2 - Tampering User Attributes In AWS Cognito User Pools](https://blog.doyensec.com/2023/01/24/tampering-unrestricted-user-attributes-aws-cognito.html)
+- [Tidbit #3 - Messing around with AWS Batch For Privilege Escalations](https://blog.doyensec.com/2023/06/13/messing-around-with-aws-batch-for-privilege-escalations.html)
 
 <hr>
 
 This project was made with love in [Doyensec Research island](https://doyensec.com/research.html).
 
-![alt text](https://doyensec.com/images/logo.svg "Doyensec Logo")
+![alt text](https://doyensec.com/img/logo.svg "Doyensec Logo")

@@ -4,6 +4,8 @@
 
 **Blog post:** [Tidbit #1 - The Danger of Falling to System Role in AWS SDK Client](https://blog.doyensec.com/2022/10/18/cloudsectidbit-dataimport.html)
 
+<img width="1614" alt="cloudsectidbit-dataimport" src="https://github.com/doyensec/cloudsec-tidbits/assets/92733595/8a1bd75c-089b-435a-a9e2-1311f158cba8">
+
 
 ### Requirements
 - The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) installed
