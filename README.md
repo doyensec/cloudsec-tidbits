@@ -18,7 +18,7 @@ Each blogpost will discuss a specific vulnerability resulting from an insecure c
 #### Season 2
 
 - [S2. Tidbit #1 - The Danger of Multi-SSO AWS Cognito User Pools](https://blog.doyensec.com/2026/05/05/cloudsectidbits-masso-cognito-sso.html)
-
+- [S2. Tidbit #2 - Navigating Lax Load Balancers: When an Intersection Gets You Inside](https://blog.doyensec.com/2026/05/05/cloudsectidbits-masso-cognito-sso.html)
 
 <hr>
 
